@@ -2,7 +2,6 @@ import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-
 class DriverFactory:
     def __init__(self):
         self.browser = os.getenv('BROWSER', 'chrome')
@@ -36,6 +35,8 @@ class DriverFactory:
             options.add_argument("--headless")
         options.add_argument(f"--width={self.width}")
         options.add_argument(f"--height={self.height}")
+
+        options.binary_location = "/usr/local/bin/firefox"
         
         driver = webdriver.Firefox(options=options)
         driver.set_window_size(self.width, self.height)

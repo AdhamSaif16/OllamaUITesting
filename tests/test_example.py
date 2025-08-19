@@ -7,7 +7,7 @@ from utils.get_driver import get_driver
 from pages.home_page import HomePage
 from pages.settings_page import SettingsPage
 
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:3001")
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:3000")
 
 class ExampleTestCase(unittest.TestCase):
     def setUp(self):
@@ -33,9 +33,16 @@ class ExampleTestCase(unittest.TestCase):
 
     def test_change_name(self):
         self.home.open(OLLAMA_URL)
-        self.home.open_profile_settings()
-        self.settings.change_name("Adham")
-        self.assertEqual(self.settings.get_name("Adham"), "Adham")
+        if self.driver.get_window_size()['width'] < 768:
+            self.home.open_profile_settings_mobile()
+            self.settings.change_name("Adham")
+            self.home.open_menu()
+            self.assertEqual(self.settings.get_name_mobile("Adham"), "Adham")
+
+        else:
+            self.home.open_profile_settings()
+            self.settings.change_name("Adham") 
+            self.assertEqual(self.settings.get_name(), "Adham")
 
 if __name__ == '__main__':
     unittest.main()
