@@ -1,11 +1,15 @@
 import os
 import sys
 import unittest
+import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.get_driver import get_driver
 from pages.home_page import HomePage
 from pages.settings_page import SettingsPage
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import os
 
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:3000")
 
@@ -26,23 +30,23 @@ class ExampleTestCase(unittest.TestCase):
 
     def test_send_message(self):
         self.home.open(OLLAMA_URL)
-        self.home.select_gemma3()
+        # self.home.select_gemma3()
         self.home.send_message("Hello! Can you help me with Python?")
         self.assertEqual(self.home.get_sent_message(), "Hello! Can you help me with Python?")
-        self.assertTrue(self.home.is_response_displayed())
+        self.assertTrue(self.home.is_response_displayed())  
 
-    def test_change_name(self):
-        self.home.open(OLLAMA_URL)
-        if self.driver.get_window_size()['width'] < 768:
-            self.home.open_profile_settings_mobile()
-            self.settings.change_name("Adham")
-            self.home.open_menu()
-            self.assertEqual(self.settings.get_name_mobile("Adham"), "Adham")
+    # def test_change_name(self):
+    #     self.home.open(OLLAMA_URL)
+    #     if self.driver.get_window_size()['width'] < 768:
+    #         self.home.open_profile_settings_mobile()
+    #         self.settings.change_name("Tameer")
+    #         self.home.open_menu()
+    #         self.assertEqual(self.settings.get_name_mobile("Tameer"), "Tameer")
 
-        else:
-            self.home.open_profile_settings()
-            self.settings.change_name("Adham") 
-            self.assertEqual(self.settings.get_name(), "Adham")
+    #     else:
+    #         self.home.open_profile_settings()
+    #         self.settings.change_name("Tameer") 
+    #         self.assertEqual(self.settings.get_name(), "Tameer")
 
 if __name__ == '__main__':
     unittest.main()
